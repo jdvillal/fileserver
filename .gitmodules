@@ -1,0 +1,3 @@
+[submodule "micro-ec"]
+	path = micro-ec
+	url = https://github.com/kmackay/micro-ecc.git

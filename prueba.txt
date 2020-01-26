@@ -1,0 +1,3 @@
+este es un archivo de prueba de la practica de sockets
+jorge villalta
+proyecto final
