@@ -1,50 +1,161 @@
-# Práctica uso de sockets
-Práctica sobre uso básico de sockets en Linux usando C para la materia Programación de Sistemas (CCPG1008) de la ESPOL.
+# Proyecto final Fileserver
+Proyecto final; cliente y servidor de subida y descarga encriptada de archivos en Linux usando C para la materia Programación de Sistemas (CCPG1008) de la ESPOL.
 
-## Instrucciones
-La práctica consiste en crear una aplicación cliente - servidor para descargar archivos desde un servidor remoto. La aplicación debe implementar la descarga remota de archivos de la siguiente manera:
-1. El cliente debe preguntar al usuario el archivo que desea descargar desde un prompt en consola.
-2. El cliente debe enviar esta información al servidor a traves de un socket TCP/IP.
-3. El servidor revisa si el nombre del archivo recibido corresponde a un archivo valido y disponible.
-4. El servidor debe responder con el tamaño del archivo o cero si el archivo no existe.
-5. El cliente debe responder con "READY" indicando al servidor que esta listo para recibir el archivo completo.
-6. El servidor debe enviar el archivo completo a traves del socket.
-7. El cliente debe recibir el archivo y grabarlo con el mismo nombre en el disco duro.
+## Servidor
 
-Toda comunicación entre cliente y servidor es enviada en modo ASCII con salto de línea al final, excepto la transmisión del contenido del archivo, el cual debe ser enviado en binario sin ninguna transformación.
+###El programa servidor *file_server* tiene el siguiente comportamiento:
+####HELP
+Si ejecutamos el servidor con la ocpion -h (help), la salida del programa es la siguiente:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080 -h
+file_server uses Blowfish encryption to upload and download files to a
+server from connected clients.
+Usage:
+	file_server [-d] <port>
+	file_server -h
+Options:
+ -h			Help, show this screen.
+ -d			Daemon mode.
 
-El programa servidor *server* tiene el siguiente comportamiento:
 ```
-$ ./server -h
-Servidor simple de descarga de archivos.
-uso:
- ./server <puerto>
- ./server -h
-Opciones:
- -h			Ayuda, muestra este mensaje
+####Ejecucion en consola
+Si ejecutamos el servidor enviando como argumento el puerto 8080, la salida del programa es la siguiente:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080
+server escuchando en puerto 8080...
+
+```
+####Daemon mode
+El servidor puede ejecutarse en segundo plano si el usuario lo requiere. Si ejecutamos el servidor enviando como argumento el puerto 8080 y la opcion -d, la salida del programa es la siguiente:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080 -d
+Escuchando como Daemon en el puerto 8080
+
+```
+###(OPCIONAL)SYSLOG
+El servidor registra eventos en la bitacora general del sistema. Dichos eventos pueden ser: Nuevo cliente conectado o desconectado. Errores en la transmicion de un archivo. Errores de lectura o escritura en el socket. Solicitudes con comandos desconocidos. Ejemplo:
+
+```
+09:39:32 file_server: [File_server| uid:1000 | pid:3242]: Se ha conectado un nuevo cliente.
+09:39:26 file_server: [File_server| uid:1000 | pid:3242]: Se ha desconectado un cliente.
+09:39:17 file_server: [File_server| uid:1000 | pid:3242]: Se ha conectado un nuevo cliente.
+09:37:49 file_server: [File_server| uid:1000 | pid:3242]: Se ha desconectado un cliente.
+09:37:46 file_server: [File_server| uid:1000 | pid:3242]: *ERROR* Se ha recibido un comando desconocido.
+09:37:46 file_server: [File_server| uid:1000 | pid:3242]: *ERROR* Se ha recibido un comando desconocido.
+09:37:40 file_server: [File_server| uid:1000 | pid:3242]: Se ha conectado un nuevo cliente.
+09:36:29 file_server: [File_server| uid:1000 | pid:3242]: Se ha desconectado un cliente.
+09:36:15 file_server: [File_server| uid:1000 | pid:3242]: Se ha conectado un nuevo cliente.
 ```
 
-El programa cliente *client* tiene el siguiente comportamiento:
+## Cliente
+
+###El programa servidor *file_server* tiene el siguiente comportamiento:
+####HELP
+Si ejecutamos el cliente con la opcion -h (help), la salida del programa es la siguiente:
+
 ```
-$ ./client -h
-Cliente simple de descarga de archivos.
-uso:
- ./client <hostname> <puerto>
- ./client -h
-Opciones:
- -h			Ayuda, muestra este mensaje
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client -h
+file_client connects to a remote file_server service and allows the
+user to upload and download files from the server.
+Usage:
+	file_client <ip> <port>
+	file_server -h
+Options:
+-h			Help, show this screen.
+
+```
+Si ejecutamos el cliente con la ip y el puerto en el que escucha el servidor, la salida del programa es la siguiente:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
+Conexion/encriptacion con el servidor establecida de manera exitosa.
+
+> 
+
 ```
 
-## Código ejemplo
+####GET
+El caracter ">" indica al usuario que el cliente espera que se ingrese un comando para hacer la solicitud al servidor. Si ingresamos el comando "GET prueba.txt" el cliente enviara la solicitud al servidor para que este ultimo busque y reponsa con dicho archivo. Ejemplo:
 
-Asumiendo que el servidor esta corriendo en una maquina con la IP 192.168.100 en el puerto 8080 y que tiene un archivo *prueba.txt* con 65 bytes de tamaño. Ejemplo de ejecución del cliente:
 ```
-$ ./client 192.168.100 8080
-Conectado exitosamente a 192.168.100 en el puerto 8080.
-Ingrese el nombre del archivo a descargar: prueba.txt
-Descargando y grabando en disco prueba.txt (65 bytes)...
-Ingrese el nombre del archivo a descargar:
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
+Conexion/encriptacion con el servidor establecida de manera exitosa.
+
+> GET prueba.txt
+El archivo se ha descargado con exito y se ha guardado con el nombre: download_prueba.txt (143-bytes)
+
+> 
 ```
+Si el servidor encuentra el archivo, lo envia al cliente usando encriptacion blowfish, si el archivo solicitado no se encuentra en el servidor, la salida es la siguiente:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
+Conexion/encriptacion con el servidor establecida de manera exitosa.
+
+> GET texto.txt
+El archivo solicitado no existe.
+
+> 
+```
+####PUT
+Si el usuario desea subir un archivo al servidor, puede usar la opcion "PUT" para ello. La salida de la ejecucion del comando "PUT prueba.txt" la siguiente:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
+Conexion/encriptacion con el servidor establecida de manera exitosa.
+
+> PUT prueba.txt
+El archivo prueba.txt (143 bytes) ha sido enviado al servidor con exito.
+
+> 
+```
+Si el archivo que el usuario desea subir al servidor no exite, la salida es la siguiente:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
+Conexion/encriptacion con el servidor establecida de manera exitosa.
+
+> PUT texto.txt
+El archivo que intenta enviar al servidor no existe.
+
+> 
+```
+####(OPCIONAL)LIST
+Tambien se ha implementado el comando (opcional) "LIST". El comando permite al servidor responder al cliente con una lista de todos los archivos disponibles en el para desargar. Ejemplo:
+```
+jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
+Conexion/encriptacion con el servidor establecida de manera exitosa.
+
+> LIST
+Archivos-disponibles-en-el-servidor:
+uECC_vli.h
+blowfish.c
+prueba.txt
+fileclient.o
+uECC.h
+csapp.h
+README.md
+uECC.c
+common.o
+types.h
+sha256.o
+blowfish.o
+common.h
+curve-specific.inc
+sha256.c
+prueba.zip
+platform-specific.inc
+fileserver.o
+fileserver.c
+sha256.h
+fileclient.c
+common.c
+platform-specific
+(copy).inc
+csapp.o
+uECC.o
+csapp.c
+blowfish.h
+libcrypto.a
+> 
+```
+
 ## Compilación
 Para compilar cliente y servidor:
 ```
@@ -58,14 +169,11 @@ Para compilar solo el client:
 ```
 $ make client
 ```
-Para compilar cliente y servidor facilitando la depuración con gdb:
+Para eliminar archivos temporales .o .a y archivos descargados o subidos durante los test de ejecucion:
 ```
-$ make debug
+$ make clean
 ```
-Para compilar cliente y servidor habilitando la herramienta AddressSanitizer, facilita la depuración en tiempo de ejecución:
-```
-$ make sanitize
-```
+
 ## Integrantes
-DARWIN BORJA: Operaciones que se deben realizar en client.c y arreglo del readme.md
-JORGE VILLALTA: Operaciones que se deben realizar en server.c, Modificación del makefile y el gitignore
+DARWIN BORJA: Proyecto base (descarga de archivos), archivos con funciones de encriptacion y archivos de prueba, implementacion del cliente, modificacion del archivo readme.
+JORGE VILLALTA: Implementacion de funciones commmon, implementacion del servidor, makefile con compilacion de libreria estatica, codigo documentado en comentarios.
