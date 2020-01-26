@@ -4,7 +4,7 @@ Proyecto final; cliente y servidor de subida y descarga encriptada de archivos e
 ## Servidor
 
 El programa servidor *file_server* tiene el siguiente comportamiento:
-### HELP
+### *HELP
 Si ejecutamos el servidor con la ocpion -h (help), la salida del programa es la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080 -h
@@ -18,21 +18,21 @@ Options:
  -d			Daemon mode.
 
 ```
-### Ejecucion en consola
+### *Ejecucion en consola
 Si ejecutamos el servidor enviando como argumento el puerto 8080, la salida del programa es la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080
 server escuchando en puerto 8080...
 
 ```
-### Daemon mode
+### *Daemon mode
 El servidor puede ejecutarse en segundo plano si el usuario lo requiere. Si ejecutamos el servidor enviando como argumento el puerto 8080 y la opcion -d, la salida del programa es la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080 -d
 Escuchando como Daemon en el puerto 8080
 
 ```
-### (OPCIONAL)SYSLOG
+### *(OPCIONAL)SYSLOG
 El servidor registra eventos en la bitacora general del sistema. Dichos eventos pueden ser: Nuevo cliente conectado o desconectado. Errores en la transmicion de un archivo. Errores de lectura o escritura en el socket. Solicitudes con comandos desconocidos. Ejemplo:
 
 ```
@@ -50,7 +50,7 @@ El servidor registra eventos en la bitacora general del sistema. Dichos eventos 
 ## Cliente
 
 El programa servidor *file_server* tiene el siguiente comportamiento:
-### HELP
+### *HELP
 Si ejecutamos el cliente con la opcion -h (help), la salida del programa es la siguiente:
 
 ```
@@ -73,7 +73,7 @@ Conexion/encriptacion con el servidor establecida de manera exitosa.
 
 ```
 
-### GET
+### *GET
 El caracter ">" indica al usuario que el cliente espera que se ingrese un comando para hacer la solicitud al servidor. Si ingresamos el comando "GET prueba.txt" el cliente enviara la solicitud al servidor para que este ultimo busque y reponsa con dicho archivo. Ejemplo:
 
 ```
@@ -95,7 +95,7 @@ El archivo solicitado no existe.
 
 > 
 ```
-### PUT
+### *PUT
 Si el usuario desea subir un archivo al servidor, puede usar la opcion "PUT" para ello. La salida de la ejecucion del comando "PUT prueba.txt" la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
@@ -116,7 +116,7 @@ El archivo que intenta enviar al servidor no existe.
 
 > 
 ```
-### (OPCIONAL)LIST
+### *(OPCIONAL)LIST
 Tambien se ha implementado el comando (opcional) "LIST". El comando permite al servidor responder al cliente con una lista de todos los archivos disponibles en el para desargar. Ejemplo:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
