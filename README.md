@@ -1,11 +1,11 @@
-# Proyecto final Fileserver
+﻿# Proyecto final Fileserver
 Proyecto final; cliente y servidor de subida y descarga encriptada de archivos en Linux usando C para la materia Programación de Sistemas (CCPG1008) de la ESPOL.
 
 ## Servidor
 
 El programa servidor *file_server* tiene el siguiente comportamiento:
 ### *HELP
-Si ejecutamos el servidor con la ocpion -h (help), la salida del programa es la siguiente:
+Si ejecutamos el servidor con la ocpión -h (help), la salida del programa es la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080 -h
 file_server uses Blowfish encryption to upload and download files to a
@@ -26,14 +26,14 @@ server escuchando en puerto 8080...
 
 ```
 ### *Daemon mode
-El servidor puede ejecutarse en segundo plano si el usuario lo requiere. Si ejecutamos el servidor enviando como argumento el puerto 8080 y la opcion -d, la salida del programa es la siguiente:
+El servidor puede ejecutarse en segundo plano si el usuario lo requiere. Si ejecutamos el servidor enviando como argumento el puerto 8080 y la opción -d, la salida del programa es la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_server 8080 -d
 Escuchando como Daemon en el puerto 8080
 
 ```
 ### *(OPCIONAL)SYSLOG
-El servidor registra eventos en la bitacora general del sistema. Dichos eventos pueden ser: Nuevo cliente conectado o desconectado. Errores en la transmicion de un archivo. Errores de lectura o escritura en el socket. Solicitudes con comandos desconocidos. Ejemplo:
+El servidor registra eventos en la bitácora general del sistema. Dichos eventos pueden ser: Nuevo cliente conectado o desconectado. Errores lectura o escritura de un archivo. Errores de lectura o escritura en el socket. Solicitudes con comandos desconocidos. Ejemplo:
 
 ```
 09:39:32 file_server: [File_server| uid:1000 | pid:3242]: Se ha conectado un nuevo cliente.
@@ -51,7 +51,7 @@ El servidor registra eventos en la bitacora general del sistema. Dichos eventos 
 
 El programa servidor *file_server* tiene el siguiente comportamiento:
 ### *HELP
-Si ejecutamos el cliente con la opcion -h (help), la salida del programa es la siguiente:
+Si ejecutamos el cliente con la opción -h (help), la salida del programa es la siguiente:
 
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client -h
@@ -74,7 +74,7 @@ Conexion/encriptacion con el servidor establecida de manera exitosa.
 ```
 
 ### *GET
-El caracter ">" indica al usuario que el cliente espera que se ingrese un comando para hacer la solicitud al servidor. Si ingresamos el comando "GET prueba.txt" el cliente enviara la solicitud al servidor para que este ultimo busque y reponsa con dicho archivo. Ejemplo:
+El caracter ">" indica al usuario que el cliente espera que se ingrese un comando para hacer la solicitud al servidor. Si ingresamos el comando "GET prueba.txt" el cliente enviará la solicitud al servidor para que este último busque y reponsa con dicho archivo. Ejemplo:
 
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
@@ -85,7 +85,7 @@ El archivo se ha descargado con exito y se ha guardado con el nombre: download_p
 
 > 
 ```
-Si el servidor encuentra el archivo, lo envia al cliente usando encriptacion blowfish, si el archivo solicitado no se encuentra en el servidor, la salida es la siguiente:
+Si el servidor encuentra el archivo, lo envia al cliente usando encriptación blowfish, si el archivo solicitado no se encuentra en el servidor, la salida es la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
 Conexion/encriptacion con el servidor establecida de manera exitosa.
@@ -96,10 +96,10 @@ El archivo solicitado no existe.
 > 
 ```
 ### *PUT
-Si el usuario desea subir un archivo al servidor, puede usar la opcion "PUT" para ello. La salida de la ejecucion del comando "PUT prueba.txt" la siguiente:
+Si el usuario desea subir un archivo al servidor, puede usar el comando "PUT" para ello. La salida de la ejecución del comando "PUT prueba.txt" es la siguiente:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
-Conexion/encriptacion con el servidor establecida de manera exitosa.
+Conexión/encriptación con el servidor establecida de manera exitosa.
 
 > PUT prueba.txt
 El archivo prueba.txt (143 bytes) ha sido enviado al servidor con exito.
@@ -117,7 +117,7 @@ El archivo que intenta enviar al servidor no existe.
 > 
 ```
 ### *(OPCIONAL)LIST
-Tambien se ha implementado el comando (opcional) "LIST". El comando permite al servidor responder al cliente con una lista de todos los archivos disponibles en el para desargar. Ejemplo:
+También se ha implementado el comando "LIST". El comando permite al servidor responder al cliente con una lista de todos los archivos disponibles en el para desargar. Ejemplo:
 ```
 jorge@jorge:~/Cfiles/proyecto-final-fileserver-borja-villalta$ ./file_client 127.0.0.1 8080
 Conexion/encriptacion con el servidor establecida de manera exitosa.
@@ -175,5 +175,5 @@ $ make clean
 ```
 
 ## Integrantes
-DARWIN BORJA: Proyecto base (descarga de archivos), archivos con funciones de encriptacion y archivos de prueba, implementacion del cliente, modificacion del archivo readme.
-JORGE VILLALTA: Implementacion de funciones commmon, implementacion del servidor, makefile con compilacion de libreria estatica, codigo documentado en comentarios.
+DARWIN BORJA: Proyecto base (descarga de archivos), archivos con funciones de encriptación y archivos de prueba, implementación del cliente, modificación del archivo readme.
+JORGE VILLALTA: Implementación de funciones commmon, implementación del servidor, makefile con compilación de libreria estatica, codigo documentado en comentarios.
